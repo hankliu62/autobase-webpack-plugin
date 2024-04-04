@@ -25,10 +25,10 @@ export interface Options {
  * @param opts 选项，包括自定义前缀。
  * @returns 返回一个Vite插件对象。
  */
-declare class AutoBaseWebpackPlugin {
+export declare class AutoBaseWebpackPlugin {
     prefix?: string;
     private isGithubActions?;
-    constructor({ prefix }: Options);
+    constructor(opts?: Options);
     apply(compiler: Compiler): void;
 }
 export default AutoBaseWebpackPlugin;

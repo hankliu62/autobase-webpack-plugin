@@ -13,7 +13,6 @@ module.exports = {
     filename: `autobase.es${process.env.NODE_ENV === 'production' ? '.min' : ''}.js`,
     library: {
       type: 'module', // 类库加载方式
-      umdNamedDefine: true
     }
   },
   resolve: {

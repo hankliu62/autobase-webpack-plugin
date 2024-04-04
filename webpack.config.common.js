@@ -12,8 +12,10 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: `autobase.cjs${process.env.NODE_ENV === 'production' ? '.min' : ''}.js`,
     library: {
-      name: 'AutoBase',
-      type: 'commonjs2' // 类库加载方式
+      type: 'commonjs2', // 类库加载方式
+      // const AutoBaseWebpackPlugin = require("autobase-webpack-plugin").default;
+      // webpack用umd方式打包出来全局用要加个default，使用这个就不需要后面的default
+      export: 'default',
     }
   },
   resolve: {

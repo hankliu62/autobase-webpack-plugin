@@ -29,11 +29,11 @@ export interface Options {
  * @returns 返回一个Vite插件对象。
  */
 
-class AutoBaseWebpackPlugin {
+export class AutoBaseWebpackPlugin {
   prefix?: string
   private isGithubActions?: boolean;
-  constructor({ prefix }: Options) {
-    this.prefix = prefix || (process.env?.GITHUB_REPOSITORY || "").replace(/.*?\//, "");
+  constructor(opts?: Options) {
+    this.prefix = opts?.prefix || (process.env?.GITHUB_REPOSITORY || "").replace(/.*?\//, "");
 
     // 检测是否在Github Actions环境中运行
     this.isGithubActions = !!(process.env?.GITHUB_ACTIONS || false);
@@ -50,7 +50,7 @@ class AutoBaseWebpackPlugin {
 
         if (this.isGithubActions) {
           // 在Github Actions环境中自动设置base路径
-          if (this.prefix && (!currentPublicPath || currentPublicPath === '/')) {
+          if (this.prefix && (!currentPublicPath || currentPublicPath === '/' || currentPublicPath === 'auto')) {
             // 用于为静态资源（如图像、样式表、JavaScript 文件等）设置 URL 前缀
             // 这在将应用部署到自定义域名或 CDN 上时特别有用，因为它允许您将静态资源存储在不同的位置
             // 设置publicPath路径，用于静态资源的URL前缀
@@ -74,7 +74,7 @@ class AutoBaseWebpackPlugin {
           // 设置process.env.ROUTE_PREFIX的值为 prefix
           (definePlugin as DefinePlugin).definitions['process.env.ROUTE_PREFIX'] = JSON.stringify(`/${this.prefix}`);
         } else {
-          // 不存在，直接添加
+          // 不存在，直接添加插件
           // 设置process.env.ROUTE_PREFIX的值为 prefix
           const definePlugin = new DefinePlugin({
             'process.env.ROUTE_PREFIX': JSON.stringify(`/${this.prefix}`),

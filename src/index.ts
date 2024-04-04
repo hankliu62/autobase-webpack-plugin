@@ -45,12 +45,9 @@ export class AutoBaseWebpackPlugin {
       // 根据命令模式（构建或开发）自动调整配置
       if (mode === 'production') {
         // 生产模式下的逻辑
-
-        const currentPublicPath = compiler.options.output.publicPath
-
         if (this.isGithubActions) {
           // 在Github Actions环境中自动设置base路径
-          if (this.prefix && (!currentPublicPath || currentPublicPath === '/' || currentPublicPath === 'auto')) {
+          if (this.prefix) {
             // 用于为静态资源（如图像、样式表、JavaScript 文件等）设置 URL 前缀
             // 这在将应用部署到自定义域名或 CDN 上时特别有用，因为它允许您将静态资源存储在不同的位置
             // 设置publicPath路径，用于静态资源的URL前缀
@@ -62,7 +59,7 @@ export class AutoBaseWebpackPlugin {
 
     compiler.hooks.thisCompilation.tap('AutoBaseWebpackPlugin', (compilation: Compilation) => {
       // 根据命令模式（构建或开发）自动调整配置
-      if (mode === 'production') {
+      if (mode === 'production' && this.isGithubActions) {
         // 生产模式下的逻辑
         // 获取DefinePlugin的定义
         const definePlugin = compilation.options.plugins.find(

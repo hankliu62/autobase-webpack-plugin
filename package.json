@@ -1,7 +1,7 @@
 {
   "name": "autobase-webpack-plugin",
   "private": false,
-  "version": "0.0.2",
+  "version": "0.0.3",
   "files": [
     "dist",
     "types"
@@ -14,7 +14,10 @@
     "import": "./dist/autobase.es.js",
     "require": "./dist/autobase.umd.min.js"
   },
-  "repository": "https://github.com/hankliu62/autobase-webpack-plugin.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hankliu62/autobase-webpack-plugin.git"
+  },
   "author": "hank.liu",
   "license": "MIT",
   "scripts": {

@@ -15,7 +15,6 @@ export interface Options {
  *
  * @example
  * ```js
- * import { defineConfig } from 'vite';
  * import AutoBaseWebpackPlugin from 'autobase-webpack-plugin';
  *
  * export default {
@@ -41,17 +40,20 @@ export class AutoBaseWebpackPlugin {
   apply(compiler: Compiler): void {
     const mode = compiler.options.mode;
 
-    compiler.hooks.afterEnvironment.tap('AutoBaseWebpackPlugin', () => {
+    compiler.hooks.environment.tap('AutoBaseWebpackPlugin', () => {
       // 根据命令模式（构建或开发）自动调整配置
       if (mode === 'production') {
         // 生产模式下的逻辑
         if (this.isGithubActions) {
           // 在Github Actions环境中自动设置base路径
           if (this.prefix) {
+            // 获取webpack配置中的output对象
+            const outputOptions = compiler.options.output;
+
             // 用于为静态资源（如图像、样式表、JavaScript 文件等）设置 URL 前缀
             // 这在将应用部署到自定义域名或 CDN 上时特别有用，因为它允许您将静态资源存储在不同的位置
-            // 设置publicPath路径，用于静态资源的URL前缀
-            compiler.options.output.publicPath = `/${this.prefix}/`;
+            // 修改publicPath
+            outputOptions.publicPath = `/${this.prefix}/${outputOptions.publicPath}/`.replace(/\/\//g, '/');
           }
         }
       }
